@@ -1,0 +1,21 @@
+
+hcloud_datacenter     = "nbg1-dc3"
+hcloud_network_zone   = "eu-central"
+hcloud_server_type_cp = "cx22"
+hcloud_server_type_wk = "cx22"
+
+talos_version = "v1.8.3"
+talos_cluster_name = "talos-test"
+talos_num_cp       = 1
+talos_num_wk       = 3
+
+# DNS
+
+# naming of nodes:
+# I use dnscontrol, to ignore automatically generated entries, I ignore this subdomain in dnscontrol
+# cpXX.<clustername>.<subdomain>.<zone>
+# if subdomain is empty
+# cpXX.<clustername>.<zone>
+# used for reverse and forward dns
+subdomain = "tf"
+dns_zone  = "somedomain.de"
