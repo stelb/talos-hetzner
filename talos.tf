@@ -27,7 +27,7 @@ locals {
   })
   talos_config_patches = yamlencode({
     cluster = {
-      allowSchedulingOnControlPlanes = true
+      allowSchedulingOnControlPlanes = true # TODO: optional
       network = {
         cni = {
           name = "none"
@@ -63,7 +63,7 @@ locals {
       ]
     }
     machine = {
-      kubelet = {
+      kubelet = { # TODO: optional kubelet version
         nodeIP = {
           validSubnets = [
             "${var.hcloud_private_network.cidr}"

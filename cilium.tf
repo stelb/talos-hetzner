@@ -5,8 +5,8 @@ data "helm_template" "cilium" {
   namespace    = "kube-system"
   chart        = "cilium"
   repository   = "https://helm.cilium.io/"
-  version      = "1.16.0-rc.0"
-  kube_version = "1.29"
+  version      = "1.16.0-rc.0" # TODO: optional specific version
+  kube_version = "1.29"        # TODO: use installed?
   atomic       = true
 
   # features
@@ -60,7 +60,3 @@ data "helm_template" "cilium" {
   }
 }
 
-# output "cilium_manifest" {
-#   value     = data.helm_template.cilium.manifest
-#   sensitive = true
-# }
