@@ -2,6 +2,13 @@
 
 This will not be perfect, it's for my own use and for learning :)
 
+ ## Target
+ * running talos with defined number of controlplanes/workers
+ * install Hetzner Cloud Controller Manager
+ * install Cilium with Gateway API
+
+Configured correctly and Hetzner has no issues, talos + kubernetes is up and runing in about 5 minutes.
+
  ## Requirements
  * Hetzner customer :)
  * Domain at Hetzner, not needed, can be removed/adapted
@@ -32,4 +39,10 @@ export TALOSCONFIG=talosconfig
 ### Input Parameter
 
 see test.tfvars.sample
+
+## Todo
+* define kubernetes version to be installed
+* define cilium version to be installed (hardcoded to 1.16rc right now)
+* maybe some other tweaks
+* maybe instsall flux, not sure if that should be part of initial setup
 
