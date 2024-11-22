@@ -11,10 +11,18 @@ variable "talos_version" {
   type        = string
   description = "talos image version"
 }
+
 variable "talos_cluster_name" {
   type        = string
   description = "name of the cluster"
 }
+
+variable "kubernetes_version" {
+  type        = string
+  description = "kubernetes image version"
+  default     = ""
+}
+
 variable "subdomain" {
   type        = string
   description = "subdomain"
@@ -47,6 +55,10 @@ variable "hcloud_private_network" {
   }
 }
 
+variable "schedule_on_controlplane" {
+  type    = bool
+  default = false
+}
 
 # cilium
 variable "cilium_operator_replicas" {

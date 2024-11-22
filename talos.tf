@@ -23,11 +23,24 @@ locals {
       #     "!${var.hcloud_private_network.cidr}"
       #   ]
       # }
+      # kubernetes version
+      apiServer = {
+        image = (var.kubernetes_version != "") ? "registry.k8s.io/kube-apiserver:v${var.kubernetes_version}" : null
+      }
+      controllerManager = {
+        image = (var.kubernetes_version != "") ? "registry.k8s.io/kube-controller-manager:v${var.kubernetes_version}" : null
+      }
+      proxy = {
+        image = (var.kubernetes_version != "") ? "registry.k8s.io/kube-proxy:v${var.kubernetes_version}" : null
+      }
+      scheduler = {
+        image = (var.kubernetes_version != "") ? "registry.k8s.io/kube-scheduler:v${var.kubernetes_version}" : null
+      }
     }
   })
   talos_config_patches = yamlencode({
     cluster = {
-      allowSchedulingOnControlPlanes = true # TODO: optional
+      allowSchedulingOnControlPlanes = var.schedule_on_controlplane
       network = {
         cni = {
           name = "none"
@@ -63,7 +76,8 @@ locals {
       ]
     }
     machine = {
-      kubelet = { # TODO: optional kubelet version
+      kubelet = {
+        image = (var.kubernetes_version != "") ? "ghcr.io/siderolabs/kubelet:v${var.kubernetes_version}" : null
         nodeIP = {
           validSubnets = [
             "${var.hcloud_private_network.cidr}"

@@ -9,6 +9,10 @@ talos_cluster_name = "talos-test"
 talos_num_cp       = 1
 talos_num_wk       = 3
 
+# optional, if not given talos default version
+#kubernetes_version = "1.29.11"
+
+
 # DNS
 
 # naming of nodes:
