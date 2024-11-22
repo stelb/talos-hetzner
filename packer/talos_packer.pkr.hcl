@@ -15,7 +15,15 @@ variable "talos_version" {
 locals {
   # link created with image factory: https://factory.talos.dev
   # Cloud Server / 1.8.3 / Hetzner / <no extensions right now> / <no customizing>
-  image = "https://factory.talos.dev/image/376567988ad370138ad8b2698212367b8edcb69b5fd68c80be1f2ec7d603b4ba/v1.8.3/hcloud-amd64.raw.xz"
+  # image = "https://factory.talos.dev/image/376567988ad370138ad8b2698212367b8edcb69b5fd68c80be1f2ec7d603b4ba/v1.8.3/hcloud-amd64.raw.xz"
+
+# customization:
+#     systemExtensions:
+#         officialExtensions:
+#             - siderolabs/iscsi-tools
+#             - siderolabs/util-linux-tools
+
+  image = "https://factory.talos.dev/image/613e1592b2da41ae5e265e8789429f22e121aab91cb4deb6bc3c0b6262961245/v1.8.3/hcloud-amd64.raw.xz"
 }
 
 # smallest possible for building
