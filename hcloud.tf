@@ -3,10 +3,6 @@ data "hcloud_image" "talos_image" {
   with_selector = "type=infra,os=talos,version=${var.talos_version}"
 }
 
-output "talos_image" {
-  value = data.hcloud_image.talos_image.id
-}
-
 resource "hcloud_network" "private_net" {
   name     = var.hcloud_private_network.name
   ip_range = var.hcloud_private_network.cidr
