@@ -8,6 +8,16 @@ resource "hcloud_network" "private_net" {
   ip_range = var.hcloud_private_network.cidr
 }
 
+resource "hcloud_placement_group" "worker" {
+  name = "worker-${var.talos_cluster_name}"
+  type = "spread"
+}
+
+resource "hcloud_placement_group" "controlplane" {
+  name = "controlplane-${var.talos_cluster_name}"
+  type = "spread"
+}
+
 resource "hcloud_network_subnet" "private_subnet" {
   network_id   = hcloud_network.private_net.id
   type         = "cloud"
@@ -16,12 +26,13 @@ resource "hcloud_network_subnet" "private_subnet" {
 }
 
 resource "hcloud_server" "talos_cp" {
-  count        = var.talos_num_cp
-  name         = format("cp%02d", count.index + 1)
-  image        = data.hcloud_image.talos_image.id
-  server_type  = var.hcloud_server_type_cp
-  datacenter   = var.hcloud_datacenter
-  firewall_ids = [hcloud_firewall.fw_extern.id]
+  count              = var.talos_num_cp
+  name               = format("cp%02d", count.index + 1)
+  image              = data.hcloud_image.talos_image.id
+  server_type        = var.hcloud_server_type_cp
+  datacenter         = var.hcloud_datacenter
+  firewall_ids       = [hcloud_firewall.fw_extern.id]
+  placement_group_id = hcloud_placement_group.controlplane.id
   network {
     network_id = hcloud_network.private_net.id
   }
@@ -47,10 +58,11 @@ resource "hcloud_server" "talos_wk" {
   count = var.talos_num_wk
   name  = format("wk%02d", count.index + 1)
 
-  image        = data.hcloud_image.talos_image.id
-  server_type  = var.hcloud_server_type_wk
-  datacenter   = var.hcloud_datacenter
-  firewall_ids = [hcloud_firewall.fw_extern.id]
+  image              = data.hcloud_image.talos_image.id
+  server_type        = var.hcloud_server_type_wk
+  datacenter         = var.hcloud_datacenter
+  firewall_ids       = [hcloud_firewall.fw_extern.id]
+  placement_group_id = hcloud_placement_group.worker.id
   network {
     network_id = hcloud_network.private_net.id
   }
