@@ -1,14 +1,14 @@
 packer {
   required_plugins {
     hcloud = {
-      version = ">= 1.2"
+      version = ">= 1.6"
       source  = "github.com/hetznercloud/hcloud"
     }
   }
 }
 
 variable "version" {
-  type    = string
+  type = string
 }
 
 variable "schematic_id" {
@@ -37,7 +37,6 @@ source "hcloud" "talos" {
     os      = "talos",
     version = "${var.version}",
     cluster = "${var.cluster_name}"
-    #schematic = "${var.talos_schematic_id}"
   }
 }
 
