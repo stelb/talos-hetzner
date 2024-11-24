@@ -23,19 +23,6 @@ locals {
       #     "!${var.hcloud_private_network.cidr}"
       #   ]
       # }
-      # kubernetes version
-      apiServer = {
-        image = (var.kubernetes_version != "") ? "registry.k8s.io/kube-apiserver:v${var.kubernetes_version}" : null
-      }
-      controllerManager = {
-        image = (var.kubernetes_version != "") ? "registry.k8s.io/kube-controller-manager:v${var.kubernetes_version}" : null
-      }
-      proxy = {
-        image = (var.kubernetes_version != "") ? "registry.k8s.io/kube-proxy:v${var.kubernetes_version}" : null
-      }
-      scheduler = {
-        image = (var.kubernetes_version != "") ? "registry.k8s.io/kube-scheduler:v${var.kubernetes_version}" : null
-      }
     }
   })
   talos_config_patches = yamlencode({
@@ -77,7 +64,6 @@ locals {
     }
     machine = {
       kubelet = {
-        image = (var.kubernetes_version != "") ? "ghcr.io/siderolabs/kubelet:v${var.kubernetes_version}" : null
         nodeIP = {
           validSubnets = [
             "${var.hcloud_private_network.cidr}"
@@ -119,10 +105,11 @@ data "talos_client_configuration" "this" {
 }
 
 data "talos_machine_configuration" "controlplane" {
-  cluster_name     = var.talos_cluster_name
-  cluster_endpoint = "https://${local.endpoint_ip}:6443"
-  machine_type     = "controlplane"
-  machine_secrets  = talos_machine_secrets.this.machine_secrets
+  cluster_name       = var.talos_cluster_name
+  cluster_endpoint   = "https://${local.endpoint_ip}:6443"
+  machine_type       = "controlplane"
+  machine_secrets    = talos_machine_secrets.this.machine_secrets
+  kubernetes_version = var.kubernetes_version
   config_patches = [
     local.talos_config_patches,
     local.talos_config_cp_patches,
@@ -146,11 +133,12 @@ resource "talos_machine_bootstrap" "this" {
 }
 
 data "talos_machine_configuration" "worker" {
-  cluster_name     = var.talos_cluster_name
-  cluster_endpoint = "https://${local.endpoint_ip}:6443"
-  machine_type     = "worker"
-  machine_secrets  = talos_machine_secrets.this.machine_secrets
-  config_patches   = [local.talos_config_patches, local.talos_disk_patch]
+  cluster_name       = var.talos_cluster_name
+  cluster_endpoint   = "https://${local.endpoint_ip}:6443"
+  machine_type       = "worker"
+  machine_secrets    = talos_machine_secrets.this.machine_secrets
+  kubernetes_version = var.kubernetes_version
+  config_patches     = [local.talos_config_patches, local.talos_disk_patch]
 }
 
 resource "talos_machine_configuration_apply" "worker" {
