@@ -10,6 +10,7 @@ variable "talos_num_wk" {
 variable "talos_version" {
   type        = string
   description = "talos image version"
+  default     = "1.8.3"
 }
 
 variable "talos_cluster_name" {
@@ -20,7 +21,13 @@ variable "talos_cluster_name" {
 variable "kubernetes_version" {
   type        = string
   description = "kubernetes image version"
-  default     = ""
+  default     = "1.31"
+}
+
+variable "cilium_version" {
+  type        = string
+  description = "cilium version"
+  default     = "1.16"
 }
 
 variable "subdomain" {

@@ -5,8 +5,8 @@ data "helm_template" "cilium" {
   namespace    = "kube-system"
   chart        = "cilium"
   repository   = "https://helm.cilium.io/"
-  version      = "1.16.0-rc.0" # TODO: optional specific version
-  kube_version = "1.29"        # TODO: use installed?
+  version      = var.cilium_version
+  kube_version = var.kubernetes_version
   atomic       = true
 
   # features
