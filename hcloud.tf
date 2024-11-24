@@ -1,6 +1,11 @@
+data "hcloud_images" "talos_image" {
+  with_selector = "type=infra,os=talos,version=${var.talos_version},cluster=${var.talos_cluster_name}"
+}
+
 
 data "hcloud_image" "talos_image" {
-  with_selector = "type=infra,os=talos,version=${var.talos_version}"
+  with_selector = "type=infra,os=talos,version=${var.talos_version},cluster=${var.talos_cluster_name}"
+  depends_on    = [terraform_data.packer_image]
 }
 
 resource "hcloud_network" "private_net" {
