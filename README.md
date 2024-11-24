@@ -40,8 +40,21 @@ export TALOSCONFIG=talosconfig
 
 see test.tfvars.sample
 
+## Create cluster
+
+```
+cd <repodir>
+cp test.tfvars.sample test.tfvars
+# adapt parameters
+
+# initialize tofu/packer
+tofu init
+packer init --upgrade packer/talos_image.pkr.hcl
+
+tofu apply -var-file=test.tfvars
+```
+
 ## Todo
-* define kubernetes version to be installed
 * define cilium version to be installed (hardcoded to 1.16rc right now)
 * maybe some other tweaks
 * maybe instsall flux, not sure if that should be part of initial setup
